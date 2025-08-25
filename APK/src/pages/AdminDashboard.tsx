@@ -134,31 +134,46 @@ const AdminDashboard: React.FC = () => {
   const fetchDashboardStats = async () => {
     try {
       // Fetch statistics from database
-      const { data: alertsData } = await supabase
+      const { data: alertsData, error: alertsError } = await supabase
         .from('sos_alerts')
         .select('status, created_at');
 
-      const { data: usersData } = await supabase
+      if (alertsError) {
+        console.error('Error fetching alerts:', alertsError);
+      }
+
+      const { data: usersData, error: usersError } = await supabase
         .from('app_users')
-        .select('id, last_active');
+        .select('*', { count: 'exact', head: true });
+
+      if (usersError) {
+        console.error('Error fetching users:', usersError);
+      }
 
       const totalAlerts = alertsData?.length || 0;
       const pendingAlerts = alertsData?.filter(a => a.status === 'pending').length || 0;
       const resolvedAlerts = alertsData?.filter(a => a.status === 'resolved').length || 0;
       
-      // Count active users (active in last 24 hours)
-      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      const activeUsers = usersData?.filter(u => u.last_active > twentyFourHoursAgo).length || 0;
+      // Get total user count (simplified - no last_active tracking)
+      const totalUsers = usersData?.length || 0;
 
       setStats({
         totalAlerts,
         pendingAlerts,
         resolvedAlerts,
-        activeUsers,
+        activeUsers: totalUsers, // Assuming totalUsers is the active user count
         systemStatus: 'operational'
       });
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
+      // Set default stats on error
+      setStats({
+        totalAlerts: 0,
+        pendingAlerts: 0,
+        resolvedAlerts: 0,
+        activeUsers: 0,
+        systemStatus: 'error'
+      });
     }
   };
 
@@ -256,7 +271,7 @@ const AdminDashboard: React.FC = () => {
             <UsersIcon size={24} />
           </div>
           <div className="stat-content">
-            <h3>Active Users</h3>
+            <h3>Total Users</h3>
             <p className="stat-number">{stats.activeUsers}</p>
           </div>
         </div>
