@@ -65,7 +65,7 @@ const Emergency: React.FC = () => {
   const showBack = location.state?.fromHome;
 
   return (
-    <div className="emergency-page">
+    <div className="emergency-page page-with-header">
       <Header title="Emergency Services" showBack={showBack} />
       {/* Emergency Alert */}
       <div className="emergency-alert-section">

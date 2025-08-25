@@ -3,10 +3,9 @@
   min-height: 100vh;
   background: #f9fafb;
   padding-bottom: 2rem;
-  padding-top: 80px; /* Add top padding to prevent header overlap */
 }
 .emergency-alert-section {
-  margin: 1.5rem 1rem 1.5rem 1rem;
+  margin: 2rem 1rem 1.5rem 1rem; /* Increased top margin for better spacing from header */
 }
 .emergency-alert-card {
   background: #fff0f0;

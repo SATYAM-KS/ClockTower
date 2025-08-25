@@ -3,7 +3,7 @@
 .sos-page {
   min-height: 100vh;
   background: #f9fafb;
-  padding-top: 80px; /* Add top padding to prevent header overlap */
+  padding-bottom: 3rem; /* Increased bottom padding */
 }
 
 /* Safety Check Popup Overlay */

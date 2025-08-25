@@ -25,3 +25,33 @@
       monospace;
   }
 }
+
+/* Common spacing for pages with fixed headers */
+.page-with-header {
+  padding-top: 80px; /* Account for fixed header height */
+  padding-bottom: 3rem; /* Consistent bottom spacing */
+}
+
+@media (min-width: 640px) {
+  .page-with-header {
+    padding-top: 90px; /* Account for larger header height on desktop */
+    padding-bottom: 4rem; /* More bottom spacing on desktop */
+  }
+}
+
+/* Common spacing utilities */
+.section-spacing {
+  margin-bottom: 2rem;
+}
+
+.section-spacing-large {
+  margin-bottom: 3rem;
+}
+
+.card-spacing {
+  margin-bottom: 1.5rem;
+}
+
+.card-spacing-large {
+  margin-bottom: 2rem;
+}

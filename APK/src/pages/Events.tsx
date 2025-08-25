@@ -103,7 +103,7 @@ const Events: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="events-page">
+      <div className="events-page page-with-header">
         <Header title="Events" />
         <div className="events-loading-spinner"></div>
       </div>
@@ -111,7 +111,7 @@ const Events: React.FC = () => {
   }
 
   return (
-    <div className="events-page">
+    <div className="events-page page-with-header">
       <Header title="Events" />
       {/* Filter Tabs */}
       <div className="events-filter-tabs">

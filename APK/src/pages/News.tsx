@@ -68,7 +68,7 @@ const News: React.FC = () => {
   };
 
   return (
-    <div className="news-page">
+    <div className="news-page page-with-header">
       <Header title="Daily News" />
 
       {/* Filter Tabs */}

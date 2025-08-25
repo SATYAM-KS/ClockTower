@@ -2,8 +2,7 @@
 .redzones-page {
   min-height: 100vh;
   background: #f9fafb;
-  padding-bottom: 2rem;
-  padding-top: 80px; /* Add top padding to prevent header overlap */
+  padding-bottom: 3rem; /* Increased bottom padding */
 }
 .redzones-loading-spinner {
   margin: 4rem auto;
@@ -19,7 +18,7 @@
   100% { transform: rotate(360deg); }
 }
 .redzones-map-section {
-  margin: 2rem 1rem 1.5rem 1rem; /* Increased top margin from 1.5rem to 2rem */
+  margin: 2rem 1rem 2rem 1rem; /* Increased bottom margin */
 }
 .redzones-map-container {
   position: relative;
@@ -75,7 +74,7 @@
 .radar-dot-low { background: #16a34a; }
 
 .redzones-legend-section {
-  margin: 0 1rem 1.5rem 1rem;
+  margin: 0 1rem 2rem 1rem; /* Increased bottom margin */
 }
 .redzones-legend-card {
   background: #fff;

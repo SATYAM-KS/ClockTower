@@ -6,7 +6,14 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   min-height: 60vh;
-  padding-top: 104px; /* Add top padding to prevent header overlap (24px + 80px) */
+}
+
+.notification-page h3:first-of-type {
+  margin-top: 2rem; /* Add top margin for spacing from header */
+  margin-bottom: 1rem;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .notification-list {

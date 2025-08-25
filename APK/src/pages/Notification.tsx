@@ -124,9 +124,8 @@ const Notification: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="notification-page page-with-header">
       <Header title="Notifications" showBack={true} />
-      <div className="notification-page">
         <h3>SOS Alerts</h3>
         {notifications.length === 0 ? (
           <div className="notification-empty">No new notifications.</div>

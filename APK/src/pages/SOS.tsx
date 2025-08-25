@@ -630,7 +630,7 @@ const SOS: React.FC = () => {
   };
 
   return (
-    <div className="sos-page">
+    <div className="sos-page page-with-header">
       <Header title="SOS Emergency" showBack={showBack} />
       
       {/* Safety Check Popup */}

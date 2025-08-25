@@ -2,7 +2,7 @@
 .news-page {
   min-height: 100vh;
   background: #f9fafb;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem; /* Increased bottom padding */
 }
 
 .news-loading-spinner {
@@ -26,7 +26,7 @@
   border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 0.5rem;
-  margin: 1.5rem 1rem 1.5rem 1rem;
+  margin: 2rem 1rem 2rem 1rem; /* Increased bottom margin */
   overflow-x: auto;
 }
 .news-filter-btn {
@@ -54,7 +54,7 @@
   color: #fff;
   border-radius: 1rem;
   padding: 1rem;
-  margin: 0 1rem 1.5rem 1rem;
+  margin: 0 1rem 2rem 1rem; /* Increased bottom margin */
 }
 .news-banner-icon {
   background: rgba(255,255,255,0.2);
@@ -76,14 +76,14 @@
 }
 
 .news-list {
-  margin: 0 1rem 2rem 1rem;
+  margin: 0 1rem 3rem 1rem; /* Increased bottom margin */
 }
 .news-card {
   background: #fff;
   border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem; /* Increased bottom margin between cards */
 }
 .news-card-empty {
   text-align: center;
@@ -161,7 +161,7 @@
   border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 1.5rem;
-  margin: 0 1rem 2rem 1rem;
+  margin: 0 1rem 3rem 1rem; /* Increased bottom margin */
 }
 .news-stats-title {
   font-size: 1.1rem;
@@ -223,7 +223,7 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin: 24px 0;
+  margin: 2rem 0 3rem 0; /* Increased top and bottom margins */
 }
 
 .news-pagination button {
@@ -267,11 +267,13 @@
 
 .news-modal-content {
   background: white;
-  padding: 20px;
+  padding: 2rem; /* Increased padding */
   max-width: 600px;
   width: 90%;
   border-radius: 10px;
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .news-modal-close {
@@ -283,9 +285,29 @@
   cursor: pointer;
 }
 
+.news-modal-content h2 {
+  margin-bottom: 1.5rem; /* Added bottom margin */
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.news-modal-content p {
+  margin-bottom: 1rem; /* Added bottom margin between paragraphs */
+  line-height: 1.6;
+}
+
+.news-modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0; /* Added vertical margins */
+  object-fit: cover;
+}
+
 .news-modal-link {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 1.5rem; /* Increased top margin */
   color: #1d4ed8;
   text-decoration: underline;
+  font-weight: 500;
 }

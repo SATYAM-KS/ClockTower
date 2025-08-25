@@ -127,7 +127,7 @@ const Alerts: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="alerts-page">
+      <div className="alerts-page page-with-header">
         <Header title="Alerts" />
         <div className="alerts-loading-spinner"></div>
       </div>
@@ -135,7 +135,7 @@ const Alerts: React.FC = () => {
   }
 
   return (
-    <div className="alerts-page">
+    <div className="alerts-page page-with-header">
       <Header title="Safety Alerts" />
       {/* Filter Tabs */}
       <div className="alerts-filter-tabs">

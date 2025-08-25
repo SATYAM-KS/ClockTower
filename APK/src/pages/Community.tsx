@@ -152,7 +152,7 @@ const Community: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="community-page">
+      <div className="community-page page-with-header">
         <Header title="Community" />
         <div className="community-loading-spinner"></div>
       </div>
@@ -160,7 +160,7 @@ const Community: React.FC = () => {
   }
 
   return (
-    <div className="community-page">
+    <div className="community-page page-with-header">
       <Header title="Community" />
       {/* Search Bar */}
       <div className="community-search-bar">

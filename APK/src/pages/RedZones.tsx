@@ -349,7 +349,7 @@ const RedZones: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="redzones-page">
+      <div className="redzones-page page-with-header">
         <Header title="Red Zones" showBack={showBack} />
         <div className="redzones-loading-spinner"></div>
       </div>
@@ -358,7 +358,7 @@ const RedZones: React.FC = () => {
 
   if (error) {
     return (
-      <div className="redzones-page">
+      <div className="redzones-page page-with-header">
         <Header title="Red Zones" showBack={showBack} />
         <div style={{
           background: '#fee2e2',
@@ -375,7 +375,7 @@ const RedZones: React.FC = () => {
   }
 
   return (
-    <div className="redzones-page">
+    <div className="redzones-page page-with-header">
       <Header title="Red Zones" showBack={showBack} />
       
       {inZone && (
