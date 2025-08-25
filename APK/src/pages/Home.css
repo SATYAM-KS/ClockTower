@@ -149,25 +149,6 @@
   line-height: 1.5;
 }
 
-.geo-alert-banner {
-  background-color: #ffefef;
-  color: #b40000;
-  border: 1px solid #ff4d4d;
-  padding: 12px;
-  margin: 16px auto;
-  width: 90%;
-  border-radius: 8px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.safety-status {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  opacity: 0.9;
-  font-weight: 500;
-}
-
 /* Hamburger icon hidden on mobile */
 .home-hamburger {
   display: none;

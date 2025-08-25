@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AlertTriangle, X, Shield } from 'lucide-react';
 import './SafetyAlertPopup.css';
 
@@ -9,6 +9,8 @@ interface SafetyAlertPopupProps {
   alertType: 'red_zone_entry' | 'red_zone_exit' | 'sos_triggered' | 'permission_required';
   message: string;
   severity: 'warning' | 'danger' | 'info' | 'success';
+  autoClose?: boolean;
+  autoCloseDelay?: number;
 }
 
 const SafetyAlertPopup: React.FC<SafetyAlertPopupProps> = ({
@@ -17,8 +19,30 @@ const SafetyAlertPopup: React.FC<SafetyAlertPopupProps> = ({
   zoneName,
   alertType,
   message,
-  severity
+  severity,
+  autoClose = false,
+  autoCloseDelay = 3000
 }) => {
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && autoClose) {
+      const timer = setTimeout(() => {
+        handleClose();
+      }, autoCloseDelay);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, autoClose, autoCloseDelay]);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+    }, 300);
+  };
+
   if (!isOpen) return null;
 
   const getIcon = () => {
@@ -51,15 +75,19 @@ const SafetyAlertPopup: React.FC<SafetyAlertPopupProps> = ({
     }
   };
 
+  // Determine if this should be a redzone banner
+  const isRedzoneBanner = alertType === 'red_zone_entry' || alertType === 'red_zone_exit';
+  const overlayClass = `safety-alert-overlay ${isRedzoneBanner ? 'redzone-banner' : ''} ${isClosing ? 'closing' : ''}`;
+
   return (
-    <div className="safety-alert-overlay">
+    <div className={overlayClass}>
       <div className={`safety-alert-popup safety-alert-${severity}`}>
         <div className="safety-alert-header">
           <div className="safety-alert-icon">
             {getIcon()}
           </div>
           <h3 className="safety-alert-title">{getTitle()}</h3>
-          <button className="safety-alert-close" onClick={onClose}>
+          <button className="safety-alert-close" onClick={handleClose}>
             <X size={20} />
           </button>
         </div>
@@ -95,7 +123,7 @@ const SafetyAlertPopup: React.FC<SafetyAlertPopupProps> = ({
         <div className="safety-alert-actions">
           <button 
             className={`safety-alert-button safety-alert-${severity}`}
-            onClick={onClose}
+            onClick={handleClose}
           >
             {alertType === 'permission_required' ? 'Request Permission' : 'I Understand'}
           </button>

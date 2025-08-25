@@ -18,16 +18,6 @@ const Home: React.FC = () => {
 
   return (
     <div className="homepage">
-      {/* Geo-Fencing Alert */}
-      {!isSafe && (
-        <div className="geo-alert-banner">
-          ⚠ You are in a Red Zone: <strong>{(currentZone as any)?.name || 'Unnamed Area'}</strong>
-          <div className="safety-status">
-            🛡️ Safety monitoring is active
-          </div>
-        </div>
-      )}
-
       {/* Home Title and Subtitle */}
       <header className="home-header">
         <div className="header-container">

@@ -6,10 +6,11 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   min-height: 60vh;
+  padding-top: 100px; /* Add top padding to account for fixed header */
 }
 
 .notification-page h3:first-of-type {
-  margin-top: 2rem; /* Add top margin for spacing from header */
+  margin-top: 1rem; /* Reduced top margin since we have margin-top on content */
   margin-bottom: 1rem;
   color: #1f2937;
   font-size: 1.25rem;
@@ -20,6 +21,11 @@
   padding: 1rem;
   max-width: 600px;
   margin: 0 auto;
+  margin-top: 2rem; /* Add top margin to separate from header */
+  background: #f8fafc; /* Light background to separate from header */
+  border-radius: 12px;
+  border: 1px solid #e2e8f0; /* Subtle border for separation */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .notification-list {

@@ -115,6 +115,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
           message={alert.message}
           severity={alert.severity}
           zoneName={alert.zoneName}
+          autoClose={alert.autoClose}
+          autoCloseDelay={alert.autoCloseDelay}
         />
       ))}
       

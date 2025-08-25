@@ -181,7 +181,9 @@ export const ZoneProvider = ({ children }: { children: ReactNode }) => {
         type: 'red_zone_entry',
         message: `You have entered ${zoneName}. Safety monitoring has been activated.`,
         severity: 'warning',
-        zoneName: zoneName
+        zoneName: zoneName,
+        autoClose: true,
+        autoCloseDelay: 3000
       });
 
       safeVibrate([300, 100, 300]);

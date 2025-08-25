@@ -45,7 +45,9 @@ const SOS: React.FC = () => {
   const [isSafetyMonitoring, setIsSafetyMonitoring] = useState(false);
   const [showSafetyCheck, setShowSafetyCheck] = useState(false);
   const [safetyCheckCount, setSafetyCheckCount] = useState(0);
+  const [safetyCheckCountdown, setSafetyCheckCountdown] = useState(300); // 5 minutes countdown for safety check
   const [isBeeping, setIsBeeping] = useState(false);
+  const [isContinuousBeeping, setIsContinuousBeeping] = useState(false); // New state for continuous beeping
   const [userResponded, setUserResponded] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
@@ -59,6 +61,7 @@ const SOS: React.FC = () => {
   const [isSuddenStart, setIsSuddenStart] = useState(false);
   
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
+  const safetyCheckCountdownRef = useRef<NodeJS.Timeout | null>(null); // New ref for safety check countdown
   const location = useLocation();
   const userId = 1; // Example user ID
   
@@ -100,6 +103,36 @@ const SOS: React.FC = () => {
     };
   }, []);
 
+  // Safety Check Countdown Timer
+  const startSafetyCheckCountdown = () => {
+    setSafetyCheckCountdown(300); // Reset to 5 minutes
+    setShowSafetyCheck(true);
+    startBeeping(true); // Start continuous beeping
+    
+    // Start countdown timer
+    safetyCheckCountdownRef.current = setInterval(() => {
+      setSafetyCheckCountdown((prev) => {
+        if (prev <= 1) {
+          // Countdown finished - stop beeping and escalate
+          console.log('⏰ Safety check countdown finished - escalating to SOS');
+          stopBeeping();
+          setShowSafetyCheck(false);
+          activateSOS(); // Automatically activate SOS
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000); // Update every second
+  };
+
+  const stopSafetyCheckCountdown = () => {
+    if (safetyCheckCountdownRef.current) {
+      clearInterval(safetyCheckCountdownRef.current);
+      safetyCheckCountdownRef.current = null;
+    }
+    setSafetyCheckCountdown(300);
+  };
+
   // Enhanced Safety Monitoring Functions
   const startEnhancedSafetyMonitoring = () => {
     console.log('🚨 Starting automatic background safety monitoring...');
@@ -108,8 +141,7 @@ const SOS: React.FC = () => {
     safetyCheckInterval.current = setInterval(() => {
       if (!userResponded && !isSOSActive) {
         setSafetyCheckCount(prev => prev + 1);
-        setShowSafetyCheck(true);
-        startBeeping();
+        startSafetyCheckCountdown(); // Use the new countdown function
         
         // Escalate after 2 checks
         if (safetyCheckCount >= 1) {
@@ -136,24 +168,40 @@ const SOS: React.FC = () => {
     if (safetyCheckInterval.current) {
       clearInterval(safetyCheckInterval.current);
     }
+    if (safetyCheckCountdownRef.current) {
+      clearInterval(safetyCheckCountdownRef.current);
+    }
     stopBeeping();
+    stopSafetyCheckCountdown(); // Stop the countdown timer
     stopVoiceRecognition();
     stopAudioLevelMonitoring();
     stopSpeedMonitoring();
   };
 
   // Beeping Alert System
-  const startBeeping = () => {
+  const startBeeping = (continuous: boolean = false) => {
     setIsBeeping(true);
-    beepInterval.current = setInterval(() => {
-      playBeepSound();
-    }, 1000); // Beep every second
+    setIsContinuousBeeping(continuous);
+    
+    if (continuous) {
+      // Continuous beeping - beep every 500ms for urgency
+      beepInterval.current = setInterval(() => {
+        playBeepSound();
+      }, 500); // Beep every 500ms for continuous mode
+    } else {
+      // Regular beeping - beep every second
+      beepInterval.current = setInterval(() => {
+        playBeepSound();
+      }, 1000); // Beep every second
+    }
   };
 
   const stopBeeping = () => {
     setIsBeeping(false);
+    setIsContinuousBeeping(false);
     if (beepInterval.current) {
       clearInterval(beepInterval.current);
+      beepInterval.current = null;
     }
   };
 
@@ -183,7 +231,8 @@ const SOS: React.FC = () => {
   const handleSafetyResponse = (isOkay: boolean) => {
     setUserResponded(true);
     setShowSafetyCheck(false);
-    stopBeeping();
+    stopBeeping(); // This will stop both regular and continuous beeping
+    stopSafetyCheckCountdown(); // Stop the countdown timer
     
     if (!isOkay) {
       console.log('🚨 User reported NOT okay - activating SOS');
@@ -237,6 +286,16 @@ const SOS: React.FC = () => {
           const lowerTranscript = finalTranscript.toLowerCase();
           console.log('🎤 Final transcript:', finalTranscript);
           
+          // Stop continuous beeping if user is speaking (providing input)
+          if (isContinuousBeeping && finalTranscript.trim().length > 0) {
+            console.log('🎤 User speaking - stopping continuous beeping');
+            stopBeeping();
+            // Also stop the safety check countdown since user is responding
+            if (showSafetyCheck) {
+              stopSafetyCheckCountdown();
+            }
+          }
+          
           const currentTime = Date.now();
           
           // Only trigger if enough time has passed since last trigger
@@ -250,7 +309,7 @@ const SOS: React.FC = () => {
               // Automatically trigger safety check for emergency keywords
               if (!isSOSActive && !showSafetyCheck) {
                 setShowSafetyCheck(true);
-                startBeeping();
+                startBeeping(true); // Start continuous beeping
                 lastTriggerTime = currentTime; // Update trigger time
               }
               
@@ -362,8 +421,7 @@ const SOS: React.FC = () => {
                 
                 // Automatically trigger safety check for loud sounds
                 if (!isSOSActive && !showSafetyCheck) {
-                  setShowSafetyCheck(true);
-                  startBeeping();
+                  startSafetyCheckCountdown(); // Use the new countdown function
                   lastTriggerTime = currentTime; // Update trigger time
                 }
                 
@@ -377,8 +435,7 @@ const SOS: React.FC = () => {
                 
                 // Automatically trigger safety check for sudden silence
                 if (!isSOSActive && !showSafetyCheck) {
-                  setShowSafetyCheck(true);
-                  startBeeping();
+                  startSafetyCheckCountdown(); // Use the new countdown function
                   lastTriggerTime = currentTime; // Update trigger time
                 }
                 
@@ -395,8 +452,7 @@ const SOS: React.FC = () => {
               
               // Automatically trigger safety check
               if (!isSOSActive && !showSafetyCheck) {
-                setShowSafetyCheck(true);
-                startBeeping();
+                startSafetyCheckCountdown(); // Use the new countdown function
                 lastTriggerTime = currentTime; // Update trigger time
               }
             }
@@ -476,8 +532,7 @@ const SOS: React.FC = () => {
                 
                 // Trigger safety check
                 if (!isSOSActive && !showSafetyCheck) {
-                  setShowSafetyCheck(true);
-                  startBeeping();
+                  startSafetyCheckCountdown(); // Use the new countdown function
                   lastTriggerTime = currentTime; // Update trigger time
                 }
               }
@@ -489,8 +544,7 @@ const SOS: React.FC = () => {
                 
                 // Trigger safety check
                 if (!isSOSActive && !showSafetyCheck) {
-                  setShowSafetyCheck(true);
-                  startBeeping();
+                  startSafetyCheckCountdown(); // Use the new countdown function
                   lastTriggerTime = currentTime; // Update trigger time
                 }
               }
@@ -509,8 +563,7 @@ const SOS: React.FC = () => {
         
         if (timeSinceLastMovement >= fiveMinutes && !stationaryTimer) {
           console.log('🚨 User stationary for 5+ minutes - triggering safety check');
-          setShowSafetyCheck(true);
-          startBeeping();
+          startSafetyCheckCountdown(); // Use the new countdown function
           
           // Set a flag to prevent multiple triggers
           stationaryTimer = setTimeout(() => {
@@ -592,6 +645,11 @@ const SOS: React.FC = () => {
   };
 
   const activateSOS = () => {
+    // Stop continuous beeping if it's active (user is providing input)
+    if (isContinuousBeeping) {
+      stopBeeping();
+    }
+    
     setIsSOSActive(true);
     setCountdown(10);
     
@@ -652,6 +710,18 @@ const SOS: React.FC = () => {
               <p className="safety-subtitle">
                 {safetyCheckCount > 0 ? '⚠️ This is your final warning!' : 'Please confirm your safety status'}
               </p>
+              
+              {/* Countdown Timer */}
+              <div className="countdown-timer">
+                <div className="countdown-label">Response Time Remaining:</div>
+                <div className="countdown-display">
+                  {Math.floor(safetyCheckCountdown / 60)} : {(safetyCheckCountdown % 60).toString().padStart(2, '0')}
+                </div>
+                <div className="countdown-warning">
+                  ⏰ Auto-SOS will activate when timer expires
+                </div>
+              </div>
+              
               <div className="safety-buttons">
                 <button 
                   className="safety-btn safe"
@@ -669,7 +739,10 @@ const SOS: React.FC = () => {
             </div>
             {isBeeping && (
               <div className="beeping-indicator">
-                🔊 Emergency Alert Active - Respond Required
+                {isContinuousBeeping 
+                  ? '🔊 CONTINUOUS ALERT - Speak to stop beeping!' 
+                  : '🔊 Emergency Alert Active - Respond Required'
+                }
               </div>
             )}
           </div>
@@ -700,7 +773,17 @@ const SOS: React.FC = () => {
                 <span>🎯 Live Transcript:</span>
                 <button 
                   className="clear-transcript-btn"
-                  onClick={() => setTranscript('')}
+                  onClick={() => {
+                    setTranscript('');
+                    // Stop continuous beeping if it's active (user is providing input)
+                    if (isContinuousBeeping) {
+                      stopBeeping();
+                    }
+                    // Also stop the safety check countdown since user is providing input
+                    if (showSafetyCheck) {
+                      stopSafetyCheckCountdown();
+                    }
+                  }}
                   title="Clear transcript"
                 >
                   🗑️ Clear
@@ -794,7 +877,10 @@ const SOS: React.FC = () => {
             </div>
             {isBeeping && (
               <div className="beeping-status-display">
-                🔊 Emergency Alert Active
+                {isContinuousBeeping 
+                  ? '🔊 CONTINUOUS ALERT - Speak to stop!' 
+                  : '🔊 Emergency Alert Active'
+                }
               </div>
             )}
             

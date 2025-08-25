@@ -1,0 +1,10 @@
+[33m661c42e9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m final
+[33mef5d40bb[m Update RouteAnalyzer, RouteMap and geocoding functionality
+[33m63d1edf7[m Update geocoding
+[33mb0601735[m Update RouteAnalyzer and RouteMap components with latest changes
+[33mbb1cbb73[m Update RouteAnalyzer and RouteMap components with latest changes
+[33mbc328953[m Update RouteMap and RouteAnalyzer components
+[33m29460c88[m Fix CORS and geocoding for production deployment
+[33m0d8c439f[m 🔧 Fix geocoding to restrict to India/Pune and fix Supabase auth
+[33m2c7821db[m 🔧 Fix CORS by hardcoding frontend URL
+[33ma392a962[m 🔧 Fix CORS issues with geocoding and update frontend URL
