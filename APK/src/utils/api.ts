@@ -27,9 +27,21 @@ export const geocodingApi = {
   }
 };
 
-// News API (if needed)
+// News API using NewsData.io with specific Crime in Pune query
 export const getNews = async () => {
-  // You can implement news fetching from external APIs here
-  // For now, return empty array since we're not using Python backend
-  return [];
+  try {
+    const url = 'https://newsdata.io/api/1/latest?apikey=pub_fed29ec234a04bbfa14d718779ea7158&q=Crime%20in%20Pune';
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`News API error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('News API call failed:', error);
+    throw error;
+  }
 }; 

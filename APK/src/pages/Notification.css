@@ -16,6 +16,12 @@
   font-weight: 600;
 }
 
+.notification-content {
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .notification-list {
   list-style: none;
   padding: 0;

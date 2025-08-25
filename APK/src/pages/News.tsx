@@ -18,6 +18,25 @@ interface NewsItem {
   url?: string;
 }
 
+// NewsData.io API response interface
+interface NewsDataResponse {
+  status: string;
+  totalResults: number;
+  results: Array<{
+    article_id: string;
+    title: string;
+    description: string;
+    content: string;
+    pubDate: string;
+    country: string[];
+    category: string[];
+    image_url?: string;
+    link: string;
+    source_id: string;
+    source_name: string;
+  }>;
+}
+
 const News: React.FC = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,27 +47,60 @@ const News: React.FC = () => {
 
   useEffect(() => {
     getNews()
-      .then(data => {
-        const articles = data.map((article: any, index: number) => ({
-          id: article.id || index.toString(),
-          title: article.title,
-          summary: article.summary || '',
-          content: article.content || '',
-          date: article.date || '',
-          location: article.location || 'Unknown',
-          category: article.category || 'safety',
-          priority: article.priority || 'medium',
-          imageUrl: article.imageUrl || '',
-          url: article.url || ''
-        }));
-        setNews(articles);
+      .then((data: NewsDataResponse) => {
+        if (data.status === 'success' && data.results) {
+          const articles = data.results.map((article, index) => ({
+            id: article.article_id || index.toString(),
+            title: article.title || 'No Title',
+            summary: article.description || 'No description available',
+            content: article.content || article.description || 'No content available',
+            date: article.pubDate ? new Date(article.pubDate).toLocaleDateString() : 'Unknown Date',
+            location: article.country && article.country.length > 0 ? article.country[0] : 'Unknown',
+            category: mapNewsCategory(article.category),
+            priority: determinePriority(article.category),
+            imageUrl: article.image_url || '',
+            url: article.link || ''
+          }));
+          setNews(articles);
+        } else {
+          console.error('Invalid news data format:', data);
+          setNews([]);
+        }
         setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching news:', err);
         setLoading(false);
+        setNews([]);
       });
   }, []);
+
+  // Helper function to map NewsData.io categories to our categories
+  const mapNewsCategory = (categories: string[]): 'redzone' | 'safety' | 'policy' | 'community' => {
+    if (!categories || categories.length === 0) return 'safety';
+    
+    const category = categories[0].toLowerCase();
+    if (category.includes('crime') || category.includes('accident')) return 'redzone';
+    if (category.includes('safety') || category.includes('security')) return 'safety';
+    if (category.includes('policy') || category.includes('government')) return 'policy';
+    if (category.includes('community') || category.includes('local')) return 'community';
+    
+    return 'safety';
+  };
+
+  // Helper function to determine priority based on category
+  const determinePriority = (categories: string[]): 'high' | 'medium' | 'low' => {
+    if (!categories || categories.length === 0) return 'medium';
+    
+    const category = categories[0].toLowerCase();
+    if (category.includes('crime') || category.includes('accident') || category.includes('emergency')) {
+      return 'high';
+    }
+    if (category.includes('policy') || category.includes('government')) {
+      return 'medium';
+    }
+    return 'low';
+  };
 
   const filteredNews = news.filter(item => filter === 'all' || item.category === filter);
   const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
@@ -89,7 +141,7 @@ const News: React.FC = () => {
         <div className="news-banner-icon"><TrendingUp size={20} /></div>
         <div className="news-banner-content">
           <h3>BREAKING NEWS</h3>
-          <p>New safety measures implemented citywide</p>
+          <p>Latest crime and safety updates from Pune</p>
         </div>
       </div>
 
