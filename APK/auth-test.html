@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - ClockTower</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status.warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .status.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .auth-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .auth-item {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .auth-item.authenticated { border-color: #28a745; background-color: #d4edda; }
+        .auth-item.not-authenticated { border-color: #dc3545; background-color: #f8d7da; }
+        .auth-item.unknown { border-color: #6c757d; background-color: #f8f9fa; }
+        
+        .test-section {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .test-section h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Authentication Test - ClockTower</h1>
+        <p>This page helps debug authentication issues with the SOS service.</p>
+        
+        <div id="status" class="status info">Initializing...</div>
+        
+        <div class="auth-status" id="authStatus">
+            <!-- Auth status items will be populated here -->
+        </div>
+        
+        <div class="test-section">
+            <h3>🔍 Authentication Status</h3>
+            <button id="checkAuthBtn" onclick="checkAuthStatus()">Check Auth Status</button>
+            <button id="debugAuthBtn" onclick="debugAuth()">Debug Auth</button>
+            <button id="reAuthBtn" onclick="reAuthenticate()">Re-authenticate</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test SOS Service</h3>
+            <button id="testSOSBtn" onclick="testSOSService()">Test SOS Service</button>
+            <button id="testProfileBtn" onclick="testUserProfile()">Test User Profile</button>
+            <button id="testAdminBtn" onclick="testAdminAccess()">Test Admin Access</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Console Log</h3>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Supabase client
+        import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+        
+        // Supabase configuration
+        const supabaseUrl = 'https://shqfvfjsxtdeknqncjfa.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNocWZ2ZmpzeHRkZWtucW5jamZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDgzNzMsImV4cCI6MjA2ODQ4NDM3M30.enzNuGiPvfMZLUPLPeDPBlMsHBOP9foFOjbGjQhLsnc';
+        
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        
+        let currentUser = null;
+        let isAuthenticated = false;
+        
+        // Override console methods to capture logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToLog(level, ...args) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            const logEntry = `[${timestamp}] ${level.toUpperCase()}: ${message}\n`;
+            logDiv.textContent += logEntry;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToLog('log', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToLog('error', ...args);
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addToLog('warn', ...args);
+        };
+        
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function updateAuthStatus() {
+            const authDiv = document.getElementById('authStatus');
+            
+            const authItems = [
+                {
+                    name: 'User Authenticated',
+                    value: isAuthenticated,
+                    description: 'User is logged in'
+                },
+                {
+                    name: 'User ID Available',
+                    value: !!(currentUser?.id),
+                    description: 'User ID is present'
+                },
+                {
+                    name: 'User Email',
+                    value: !!(currentUser?.email),
+                    description: 'User email is available'
+                },
+                {
+                    name: 'Session Valid',
+                    value: !!(currentUser?.created_at),
+                    description: 'Session is valid'
+                }
+            ];
+            
+            authDiv.innerHTML = authItems.map(item => `
+                <div class="auth-item ${item.value ? 'authenticated' : 'not-authenticated'}">
+                    <h4>${item.name}</h4>
+                    <p>${item.value ? '✅' : '❌'}</p>
+                    <small>${item.description}</small>
+                </div>
+            `).join('');
+        }
+        
+        async function checkAuthStatus() {
+            console.log('🔍 Checking authentication status...');
+            
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser();
+                
+                if (error) {
+                    console.error('Error getting user:', error);
+                    currentUser = null;
+                    isAuthenticated = false;
+                    updateStatus('❌ Authentication error: ' + error.message, 'error');
+                } else if (user) {
+                    currentUser = user;
+                    isAuthenticated = true;
+                    console.log('✅ User authenticated:', user.id);
+                    updateStatus('✅ User authenticated: ' + user.email, 'success');
+                } else {
+                    currentUser = null;
+                    isAuthenticated = false;
+                    console.log('⚠️ No authenticated user found');
+                    updateStatus('⚠️ No authenticated user found', 'warning');
+                }
+                
+                updateAuthStatus();
+                
+                // Log detailed user info
+                if (currentUser) {
+                    console.log('🔍 User details:', {
+                        id: currentUser.id,
+                        email: currentUser.email,
+                        created_at: currentUser.created_at,
+                        last_sign_in_at: currentUser.last_sign_in_at,
+                        user_metadata: currentUser.user_metadata
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Failed to check auth status:', error);
+                updateStatus('❌ Failed to check auth status', 'error');
+            }
+        }
+        
+        async function debugAuth() {
+            console.log('🔍 === Authentication Debug ===');
+            console.log('🔍 Current user:', currentUser);
+            console.log('🔍 Is authenticated:', isAuthenticated);
+            console.log('🔍 Supabase client:', supabase);
+            
+            if (currentUser) {
+                console.log('🔍 User ID:', currentUser.id);
+                console.log('🔍 User email:', currentUser.email);
+                console.log('🔍 User metadata:', currentUser.user_metadata);
+            }
+            
+            // Check session
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                console.log('🔍 Session:', session);
+                console.log('🔍 Session error:', error);
+            } catch (error) {
+                console.error('🔍 Error getting session:', error);
+            }
+            
+            console.log('🔍 === End Debug ===');
+        }
+        
+        async function reAuthenticate() {
+            console.log('🔄 Attempting to re-authenticate...');
+            updateStatus('🔄 Re-authenticating...', 'info');
+            
+            try {
+                await checkAuthStatus();
+            } catch (error) {
+                console.error('Re-authentication failed:', error);
+                updateStatus('❌ Re-authentication failed', 'error');
+            }
+        }
+        
+        async function testSOSService() {
+            console.log('🧪 Testing SOS service...');
+            
+            if (!currentUser?.id) {
+                console.error('❌ Cannot test SOS service: No authenticated user');
+                updateStatus('❌ No authenticated user for SOS test', 'error');
+                return;
+            }
+            
+            try {
+                // Test user profile fetch
+                console.log('🧪 Testing user profile fetch...');
+                const { data: profile, error: profileError } = await supabase
+                    .from('app_users')
+                    .select('email, phone')
+                    .eq('id', currentUser.id)
+                    .single();
+                
+                if (profileError) {
+                    console.error('❌ Profile fetch failed:', profileError);
+                } else {
+                    console.log('✅ Profile fetch successful:', profile);
+                }
+                
+                // Test SOS alert creation (without actually creating one)
+                console.log('🧪 Testing SOS alert creation...');
+                const testAlert = {
+                    user_id: currentUser.id,
+                    user_email: currentUser.email,
+                    latitude: 0,
+                    longitude: 0,
+                    alert_type: 'manual_sos',
+                    status: 'pending',
+                    user_message: 'Test alert'
+                };
+                
+                console.log('🧪 Test alert data:', testAlert);
+                console.log('✅ SOS service test completed');
+                
+            } catch (error) {
+                console.error('❌ SOS service test failed:', error);
+            }
+        }
+        
+        async function testUserProfile() {
+            console.log('🧪 Testing user profile...');
+            
+            if (!currentUser?.id) {
+                console.error('❌ Cannot test profile: No authenticated user');
+                return;
+            }
+            
+            try {
+                const { data: profile, error } = await supabase
+                    .from('app_users')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .single();
+                
+                if (error) {
+                    console.error('❌ Profile test failed:', error);
+                } else {
+                    console.log('✅ Profile test successful:', profile);
+                }
+                
+            } catch (error) {
+                console.error('❌ Profile test failed:', error);
+            }
+        }
+        
+        async function testAdminAccess() {
+            console.log('🧪 Testing admin access...');
+            
+            if (!currentUser?.id) {
+                console.error('❌ Cannot test admin access: No authenticated user');
+                return;
+            }
+            
+            try {
+                const { data: adminCheck, error } = await supabase
+                    .from('admin_users')
+                    .select('is_active')
+                    .eq('user_id', currentUser.id)
+                    .eq('is_active', true)
+                    .single();
+                
+                if (error) {
+                    console.error('❌ Admin check failed:', error);
+                } else if (adminCheck) {
+                    console.log('✅ User is admin:', adminCheck);
+                } else {
+                    console.log('ℹ️ User is not admin');
+                }
+                
+            } catch (error) {
+                console.error('❌ Admin test failed:', error);
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            console.log('🚀 Authentication test page loaded');
+            updateStatus('🔄 Checking authentication...', 'info');
+            
+            // Check initial auth status
+            await checkAuthStatus();
+            
+            // Make functions globally available
+            window.checkAuthStatus = checkAuthStatus;
+            window.debugAuth = debugAuth;
+            window.reAuthenticate = reAuthenticate;
+            window.testSOSService = testSOSService;
+            window.testUserProfile = testUserProfile;
+            window.testAdminAccess = testAdminAccess;
+        });
+        
+        // Listen for auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('🔐 Auth state changed:', event, session?.user?.id);
+            
+            if (event === 'SIGNED_IN' && session?.user) {
+                currentUser = session.user;
+                isAuthenticated = true;
+                updateStatus('✅ User signed in: ' + session.user.email, 'success');
+                updateAuthStatus();
+            } else if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                isAuthenticated = false;
+                updateStatus('⚠️ User signed out', 'warning');
+                updateAuthStatus();
+            }
+        });
+    </script>
+</body>
+</html>

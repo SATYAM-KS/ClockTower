@@ -1,0 +1,334 @@
+/* Home.css */
+.homepage {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding-top: 80px; /* Add top padding to prevent header overlap */
+}
+
+.home-header {
+  background-color: #fef2f2; /* Light red background to match feature grid */
+  color: #dc2626; /* Red text to match card text and icons */
+  padding: 2rem 0 3rem 0;
+  text-align: center;
+  margin-top: -80px; /* Compensate for the top padding */
+  padding-top: 20px; /* Add extra top padding to header */
+  border-bottom: 2px solid #fecaca; /* Subtle light red border for minimal look */
+}
+
+.home-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #dc2626; /* Red text to match card text and icons */
+}
+
+.home-subtitle {
+  font-size: 1.125rem;
+  color: #dc2626; /* Red text to match card text and icons */
+  opacity: 0.9;
+}
+
+/* Feature cards grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 2rem 1.5rem;
+  margin-top: 2rem; /* Increased from 1.5rem */
+  padding-top: 2rem; /* Add top padding to prevent header overlap */
+  background-color: #fef2f2; /* Light red background */
+  border-radius: 1rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+/* Feature card styling */
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: box-shadow 0.3s;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.feature-card.pink { background: #ffffff; color: #dc2626; } /* White - Live Map */
+.feature-card.blue { background: #ffffff; color: #dc2626; } /* White - Emergency */
+.feature-card.yellow { background: #ffffff; color: #dc2626; } /* White - My Reports */
+.feature-card.red { background: #ffffff; color: #dc2626; } /* White - S.O.S */
+.feature-card.green { background: #ffffff; color: #dc2626; } /* White - Notification */
+.feature-card.orange { background: #ffffff; color: #dc2626; } /* White - Profile */
+
+.icon-bg {
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feature-title {
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tips-section {
+  padding: 2rem 1.5rem;
+  margin-top: 3rem; /* Increased from 2rem for better spacing */
+  margin-bottom: 2rem;
+  padding-top: 2rem; /* Add top padding for better visual separation */
+}
+
+.tips-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.tips-list-container {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Test Safety Features Section */
+.test-safety-section {
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.test-safety-button {
+  width: 100%;
+  background: #f59e0b;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.test-safety-button:hover {
+  background: #d97706;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  color: #374151;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.tip-dot {
+  color: #ec4899;
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.geo-alert-banner {
+  background-color: #ffefef;
+  color: #b40000;
+  border: 1px solid #ff4d4d;
+  padding: 12px;
+  margin: 16px auto;
+  width: 90%;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.safety-status {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Hamburger icon hidden on mobile */
+.home-hamburger {
+  display: none;
+}
+
+/* Sidebar styles */
+.home-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 49;
+}
+
+.home-sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 260px;
+  background: #fff;
+  box-shadow: -2px 0 16px rgba(0,0,0,0.12);
+  z-index: 50;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  animation: slideInSidebar 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes slideInSidebar {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.home-sidebar-close {
+  align-self: flex-end;
+  margin-bottom: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.home-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.home-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #374151;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.home-sidebar-link.active {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.home-sidebar-link:hover {
+  background: #f9fafb;
+}
+
+/* === Desktop styles from 640px and above === */
+@media (min-width: 640px) {
+  /* Header container as flex with centered text */
+  .header-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 64rem; /* ~1024px */
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 100px; /* adjust if needed */
+  }
+
+  /* Invisible spacer same width as hamburger for symmetry */
+  .spacer {
+    width: 28px;
+  }
+
+  /* Center the header title absolutely in the middle */
+  .home-header-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  /* Show hamburger menu */
+  .home-hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+    right: 0;
+  }
+
+  /* Hover effect on hamburger */
+  .home-hamburger:hover {
+    background: #f3f4f6;
+  }
+
+  /* Push hamburger a bit further right when viewport is wider than 740px */
+  @media (min-width: 740px) {
+    .home-hamburger {
+      right: 1.5rem;
+      position: relative;
+    }
+  }
+
+  /* Feature grid layout changes */
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 0 2rem;
+    margin-top: 2rem;
+  }
+
+  /* At even larger screens, 4 columns */
+  @media (min-width: 1024px) {
+    .feature-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
+      padding: 0 3rem;
+      margin-top: 2.5rem;
+    }
+  }
+
+  /* Adjust header padding and font sizes for desktop */
+  .home-header {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    text-align: left; /* The title is centered absolutely, so text-align can be left */
+  }
+
+  .home-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .home-subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* Additional hamburger positioning for mobile */
+.home-hamburger {
+  right: 0rem;
+  position: relative;
+}

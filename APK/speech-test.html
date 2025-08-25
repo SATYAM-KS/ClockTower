@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition Test - ClockTower</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status.warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .status.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        
+        .transcript {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            min-height: 100px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .health-check {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .health-item {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .health-item.healthy { border-color: #28a745; background-color: #d4edda; }
+        .health-item.warning { border-color: #ffc107; background-color: #fff3cd; }
+        .health-item.error { border-color: #dc3545; background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Speech Recognition Test</h1>
+        <p>This page helps debug speech recognition issues in the ClockTower app.</p>
+        
+        <div id="status" class="status info">Initializing...</div>
+        
+        <div class="health-check" id="healthCheck">
+            <!-- Health check items will be populated here -->
+        </div>
+        
+        <div>
+            <button id="startBtn" onclick="startRecognition()">Start Recognition</button>
+            <button id="stopBtn" onclick="stopRecognition()" disabled>Stop Recognition</button>
+            <button id="clearBtn" onclick="clearTranscript()">Clear Transcript</button>
+            <button id="healthBtn" onclick="checkHealth()">Check Health</button>
+        </div>
+        
+        <h3>Live Transcript</h3>
+        <div id="transcript" class="transcript">Click "Start Recognition" to begin...</div>
+        
+        <h3>Console Log</h3>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        let recognition = null;
+        let isListening = false;
+        let transcript = '';
+        
+        // Override console methods to capture logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToLog(level, ...args) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            const logEntry = `[${timestamp}] ${level.toUpperCase()}: ${message}\n`;
+            logDiv.textContent += logEntry;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToLog('log', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToLog('error', ...args);
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addToLog('warn', ...args);
+        };
+        
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function updateHealthCheck() {
+            const healthDiv = document.getElementById('healthCheck');
+            const isSecureContext = window.isSecureContext;
+            const isOnline = navigator.onLine;
+            const isHttps = location.protocol === 'https:' || location.hostname === 'localhost';
+            const hasRecognition = !!(window.webkitSpeechRecognition || window.SpeechRecognition);
+            
+            const healthItems = [
+                {
+                    name: 'Secure Context',
+                    value: isSecureContext,
+                    description: 'Required for microphone access'
+                },
+                {
+                    name: 'Network Online',
+                    value: isOnline,
+                    description: 'Required for speech recognition'
+                },
+                {
+                    name: 'HTTPS/Localhost',
+                    value: isHttps,
+                    description: 'Required for production'
+                },
+                {
+                    name: 'Speech Recognition',
+                    value: hasRecognition,
+                    description: 'Browser support'
+                }
+            ];
+            
+            healthDiv.innerHTML = healthItems.map(item => `
+                <div class="health-item ${item.value ? 'healthy' : 'error'}">
+                    <h4>${item.name}</h4>
+                    <p>${item.value ? '✅' : '❌'}</p>
+                    <small>${item.description}</small>
+                </div>
+            `).join('');
+        }
+        
+        function initializeRecognition() {
+            console.log('🎤 Initializing speech recognition...');
+            console.log('🎤 WebkitSpeechRecognition available:', !!window.webkitSpeechRecognition);
+            console.log('🎤 SpeechRecognition available:', !!window.SpeechRecognition);
+            console.log('🎤 Window object keys:', Object.keys(window).filter(key => key.toLowerCase().includes('speech')));
+            
+            if (!window.webkitSpeechRecognition && !window.SpeechRecognition) {
+                updateStatus('❌ Speech recognition not supported in this browser', 'error');
+                return false;
+            }
+            
+            const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+            
+            try {
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                if ('maxAlternatives' in recognition) {
+                    recognition.maxAlternatives = 1;
+                }
+                
+                recognition.onstart = () => {
+                    console.log('✅ Speech recognition started');
+                    updateStatus('🎤 Listening...', 'success');
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                };
+                
+                recognition.onend = () => {
+                    console.log('🔄 Speech recognition ended');
+                    if (isListening) {
+                        updateStatus('🔄 Restarting recognition...', 'warning');
+                        setTimeout(() => {
+                            if (isListening) {
+                                recognition.start();
+                            }
+                        }, 100);
+                    } else {
+                        updateStatus('⏹️ Recognition stopped', 'info');
+                        document.getElementById('startBtn').disabled = false;
+                        document.getElementById('stopBtn').disabled = true;
+                    }
+                };
+                
+                recognition.onresult = (event) => {
+                    console.log('🎤 Speech recognition result received');
+                    console.log('🎤 Results length:', event.results.length);
+                    
+                    let finalTranscript = '';
+                    let interimTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript;
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    if (finalTranscript) {
+                        transcript += finalTranscript + ' ';
+                        console.log('🎤 Final transcript:', finalTranscript);
+                        console.log('🎤 Full transcript:', transcript);
+                        updateTranscript();
+                    }
+                    
+                    if (interimTranscript) {
+                        console.log('🎤 Interim transcript:', interimTranscript);
+                        updateTranscript(interimTranscript);
+                    }
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('❌ Speech recognition error:', event.error);
+                    console.error('❌ Error details:', {
+                        error: event.error,
+                        message: event.message || 'No message',
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    if (event.error === 'no-speech') {
+                        console.log('🎤 No speech detected - this is normal');
+                        return;
+                    }
+                    
+                    if (event.error === 'network') {
+                        updateStatus('🌐 Network error - speech recognition service unavailable', 'error');
+                        console.log('🌐 This usually indicates:');
+                        console.log('   - Poor internet connection');
+                        console.log('   - Firewall blocking speech recognition service');
+                        console.log('   - Browser speech recognition service unavailable');
+                        console.log('   - Network timeout or connectivity issues');
+                    } else if (event.error === 'service-not-allowed') {
+                        updateStatus('🚫 Service not allowed - may be blocked by firewall', 'error');
+                    } else if (event.error === 'not-allowed') {
+                        updateStatus('🚫 Microphone access denied', 'error');
+                    } else {
+                        updateStatus(`❌ Error: ${event.error}`, 'error');
+                    }
+                };
+                
+                console.log('✅ Speech recognition initialization complete');
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize speech recognition:', error);
+                updateStatus('❌ Failed to initialize speech recognition', 'error');
+                return false;
+            }
+        }
+        
+        function startRecognition() {
+            if (!recognition) {
+                if (!initializeRecognition()) {
+                    return;
+                }
+            }
+            
+            try {
+                isListening = true;
+                recognition.start();
+                console.log('🎤 Starting speech recognition...');
+            } catch (error) {
+                console.error('❌ Failed to start recognition:', error);
+                updateStatus('❌ Failed to start recognition', 'error');
+            }
+        }
+        
+        function stopRecognition() {
+            if (recognition) {
+                isListening = false;
+                recognition.stop();
+                console.log('🛑 Stopping speech recognition...');
+            }
+        }
+        
+        function clearTranscript() {
+            transcript = '';
+            updateTranscript();
+            console.log('🧹 Transcript cleared');
+        }
+        
+        function updateTranscript(interim = '') {
+            const transcriptDiv = document.getElementById('transcript');
+            transcriptDiv.textContent = transcript + (interim ? ` [${interim}]` : '');
+        }
+        
+        function checkHealth() {
+            console.log('🔍 Checking system health...');
+            updateHealthCheck();
+            
+            const health = {
+                isSecureContext: window.isSecureContext,
+                isOnline: navigator.onLine,
+                isHttps: location.protocol === 'https:' || location.hostname === 'localhost',
+                hasRecognition: !!(window.webkitSpeechRecognition || window.SpeechRecognition),
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language
+            };
+            
+            console.log('🔍 Health check results:', health);
+            
+            if (!health.isSecureContext) {
+                console.warn('⚠️ Not in secure context - microphone access may be limited');
+            }
+            
+            if (!health.isOnline) {
+                console.warn('⚠️ Network is offline - speech recognition may not work');
+            }
+            
+            if (!health.isHttps && location.hostname !== 'localhost') {
+                console.warn('⚠️ Not on HTTPS - speech recognition may not work in production');
+            }
+            
+            if (!health.hasRecognition) {
+                console.error('❌ Speech recognition not supported in this browser');
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            console.log('🚀 Speech recognition test page loaded');
+            updateHealthCheck();
+            checkHealth();
+            
+            if (window.webkitSpeechRecognition || window.SpeechRecognition) {
+                updateStatus('✅ Ready to test speech recognition', 'success');
+            } else {
+                updateStatus('❌ Speech recognition not supported in this browser', 'error');
+            }
+        });
+        
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            console.log('🌐 Network came online');
+            updateHealthCheck();
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('🌐 Network went offline');
+            updateHealthCheck();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,526 @@
+/* Enhanced Safety Monitoring Component Styles */
+
+.enhanced-safety-monitoring {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  margin: 1rem 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Safety Check Popup Overlay */
+.safety-check-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.safety-check-popup {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUp 0.3s ease-out;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.popup-header h3 {
+  margin: 0;
+  color: #dc2626;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.alert-icon {
+  color: #dc2626;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.popup-content {
+  margin-bottom: 1.5rem;
+}
+
+.safety-question {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.safety-subtitle {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.safety-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.safety-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.safety-btn.safe {
+  background: #10b981;
+  color: white;
+}
+
+.safety-btn.safe:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.safety-btn.danger {
+  background: #dc2626;
+  color: white;
+}
+
+.safety-btn.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.beeping-indicator {
+  background: #dc2626;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  animation: pulse 1s infinite;
+  margin-top: 1rem;
+}
+
+/* Safety Header */
+.safety-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.safety-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.safety-status {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.redzone-indicator {
+  background: #dc2626;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+.beeping-status {
+  background: #f59e0b;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  animation: pulse 1s infinite;
+}
+
+/* Safety Sections */
+.safety-section {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.control-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.control-btn.active {
+  background: #dc2626;
+}
+
+.control-btn.active:hover {
+  background: #b91c1c;
+}
+
+/* Status Indicators */
+.status-indicator {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-indicator.listening {
+  background: #10b981;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+/* Transcript Display */
+.transcript-display {
+  background: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.keyword-alert {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  border: 1px solid #fecaca;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Audio Level Monitoring */
+.audio-level {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.level-bar {
+  flex: 1;
+  height: 20px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.level-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #f59e0b, #dc2626);
+  transition: width 0.3s ease;
+  border-radius: 10px;
+}
+
+.level-value {
+  font-weight: 600;
+  color: #374151;
+  min-width: 40px;
+  text-align: center;
+}
+
+.baseline-info {
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.noise-anomaly-alert {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #fecaca;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Speed and Movement Monitoring */
+.speed-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.data-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.data-item span:first-child {
+  color: #6b7280;
+}
+
+.data-item .value {
+  font-weight: 600;
+  color: #374151;
+}
+
+.movement-alerts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.alert {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  animation: slideIn 0.3s ease-out;
+}
+
+.alert.accelerating {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.alert.decelerating {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert.sudden-stop {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert.sudden-start {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+/* Continuous Safety Monitoring Status */
+.monitoring-status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.status-item span:first-child {
+  color: #6b7280;
+}
+
+.status-item .value {
+  font-weight: 600;
+  color: #374151;
+}
+
+.beeping-status-display {
+  grid-column: 1 / -1;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  animation: pulse 1s infinite;
+  border: 1px solid #fde68a;
+}
+
+/* Location Display */
+.location-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.no-location {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Safety Tips */
+.safety-tips {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.safety-tips h4 {
+  margin: 0 0 1rem 0;
+  color: #0369a1;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.safety-tips ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #0c4a6e;
+}
+
+.safety-tips li {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .enhanced-safety-monitoring {
+    padding: 0.75rem;
+  }
+  
+  .safety-check-popup {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .safety-buttons {
+    flex-direction: column;
+  }
+  
+  .speed-data {
+    grid-template-columns: 1fr;
+  }
+  
+  .monitoring-status {
+    grid-template-columns: 1fr;
+  }
+}

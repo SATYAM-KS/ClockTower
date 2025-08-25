@@ -1,0 +1,202 @@
+/* ReportIncident.css */
+.reportincident-page {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding-bottom: 2rem;
+  padding-top: 80px; /* Add top padding to prevent header overlap */
+}
+.reportincident-form-section {
+  margin: 1.5rem 1rem 2rem 1rem;
+}
+.reportincident-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.reportincident-section {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.25rem 1rem;
+  margin-bottom: 0.5rem;
+}
+.reportincident-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+.reportincident-input, .reportincident-select, .reportincident-textarea {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.reportincident-textarea {
+  resize: none;
+}
+.reportincident-severity-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.reportincident-severity-btn {
+  flex: 1;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  transition: border 0.2s, background 0.2s, color 0.2s;
+}
+.reportincident-severity-btn-active {
+  border: 2px solid #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+.reportincident-severity-label {
+  font-weight: 600;
+}
+.reportincident-severity-label-low { color: #22c55e; }
+.reportincident-severity-label-medium { color: #facc15; }
+.reportincident-severity-label-high { color: #ef4444; }
+.reportincident-location-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.reportincident-location-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.reportincident-location-btn:hover {
+  background: #1d4ed8;
+}
+.reportincident-photo-upload {
+  border: 2px dashed #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.reportincident-photo-icon {
+  color: #d1d5db;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.reportincident-photo-desc {
+  color: #6b7280;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.reportincident-photo-note {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.reportincident-photo-input {
+  display: none;
+}
+.reportincident-photo-label {
+  display: inline-block;
+  background: #3b82f6;
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.reportincident-photo-label:hover {
+  background: #1d4ed8;
+}
+.reportincident-anonymous {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.reportincident-anonymous-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #3b82f6;
+}
+.reportincident-anonymous-label {
+  font-size: 1rem;
+  color: #374151;
+  font-weight: 500;
+}
+.reportincident-anonymous-desc {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  margin-left: 2rem;
+  margin-top: 0.25rem;
+}
+.reportincident-warning {
+  background: #fef9c3;
+  border: 1px solid #fde68a;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+.reportincident-warning-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.reportincident-warning-icon {
+  color: #facc15;
+  margin-top: 0.25rem;
+}
+.reportincident-warning-title {
+  font-weight: 600;
+  color: #b45309;
+  font-size: 1rem;
+}
+.reportincident-warning-desc {
+  color: #b45309;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+.reportincident-submit-btn {
+  width: 100%;
+  padding: 1.25rem 0;
+  border-radius: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #fff;
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.reportincident-submit-btn:hover:not(.reportincident-submit-btn-disabled) {
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+  transform: scale(1.03);
+}
+.reportincident-submit-btn-disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+.reportincident-submit-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.reportincident-submit-spinner {
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+}
+.reportincident-submit-icon {
+  margin-right: 0.5rem;
+} 

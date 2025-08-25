@@ -1,0 +1,241 @@
+/* RedZones.css */
+.redzones-page {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding-bottom: 2rem;
+  padding-top: 80px; /* Add top padding to prevent header overlap */
+}
+.redzones-loading-spinner {
+  margin: 4rem auto;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.redzones-map-section {
+  margin: 2rem 1rem 1.5rem 1rem; /* Increased top margin from 1.5rem to 2rem */
+}
+.redzones-map-container {
+  position: relative;
+  height: 24rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+}
+.redzones-leaflet-map {
+  height: 100%;
+  width: 100%;
+}
+
+.radar-pulse-marker {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  z-index: 1000;
+}
+.radar-pulse {
+  position: absolute;
+  left: 50%; 
+  top: 50%;
+  width: 40px; 
+  height: 40px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: radar-pulse-anim 1.5s infinite;
+}
+.radar-pulse-dot {
+  position: absolute;
+  left: 50%; 
+  top: 50%;
+  width: 18px; 
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0.9;
+  z-index: 2;
+  background: currentColor;
+}
+@keyframes radar-pulse-anim {
+  0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0.7; }
+  70% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+}
+.radar-pulse-high { background: #dc2626; }
+.radar-pulse-medium { background: #f59e0b; }
+.radar-pulse-low { background: #16a34a; }
+.radar-dot-high { background: #dc2626; }
+.radar-dot-medium { background: #f59e0b; }
+.radar-dot-low { background: #16a34a; }
+
+.redzones-legend-section {
+  margin: 0 1rem 1.5rem 1rem;
+}
+.redzones-legend-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.25rem 1rem;
+}
+.redzones-legend-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+.redzones-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.redzones-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.redzones-legend-dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+.redzones-legend-dot-high { background: #dc2626; }
+.redzones-legend-dot-medium { background: #f59e0b; }
+.redzones-legend-dot-low { background: #16a34a; }
+.redzones-legend-label {
+  font-size: 1rem;
+  color: #374151;
+}
+.redzones-list-section {
+  margin: 0 1rem 2rem 1rem;
+}
+.redzones-list-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+.redzones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.redzones-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.25rem 1rem;
+}
+.redzones-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.redzones-card-title {
+  font-weight: 600;
+  color: #1f2937;
+  padding-right: 90px; /* Make space for badge */
+  min-width: 0;
+  word-break: break-word;
+}
+.redzones-card-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.redzones-card-badge-high { background: #fee2e2; color: #b91c1c; }
+.redzones-card-badge-medium { background: #fef08a; color: #b45309; }
+.redzones-card-badge-low { background: #dcfce7; color: #166534; }
+.redzones-card-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  font-size: 1rem;
+}
+.redzones-card-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.redzones-card-detail-icon {
+  color: #6b7280;
+}
+.redzones-card-detail-label {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+.redzones-card-detail-value {
+  font-weight: 600;
+  color: #1f2937;
+} 
+
+.redzones-card-header-flex {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.redzones-card-relative {
+  position: relative;
+}
+
+.redzones-badge-pill.redzones-badge-absolute {
+  position: absolute;
+  top: 1rem;
+  right: 0.3rem;
+  margin-left: 0;
+  z-index: 2;
+} 
+
+.analyzer {
+  margin: 1rem auto;
+  display : block;
+  padding: 0.75rem 1.5rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Focus Location Button */
+.focus-location-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.focus-location-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.focus-location-btn:active {
+  transform: scale(0.95);
+}
+

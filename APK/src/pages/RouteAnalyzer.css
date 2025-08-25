@@ -1,0 +1,104 @@
+/* RouteAnalyzer.css */
+.route-analyzer-page {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding-bottom: 2rem;
+}
+.route-analyzer-header-wrapper {
+  width: 100%;
+}
+.route-analyzer-main-content {
+  max-width: 480px;
+  margin: 2rem auto 0 auto;
+  padding: 0 1rem;
+}
+.route-analyzer-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-direction: column;
+}
+.route-analyzer-input {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 1rem;
+}
+.analyze {
+  background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 2rem;
+  margin: 0.5rem auto 0 auto;
+  display: block;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  font-size: 1rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.analyze:hover {
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+.route-analyzer-map-container {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  width: 100%;
+}
+.route-analyzer-risk-level {
+  margin-top: 1rem;
+}
+  
+.leaflet-routing-container {
+  display: none !important;
+}
+
+.ripple-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.4);
+  animation: ripple 1.5s infinite;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  pointer-events: none;
+  font-size: 18px;
+  color: #cc3333; /* red-ish pin color */
+}
+
+.route-analyzer-input {
+  padding-left: 30px; /* make space for the icon */
+  width: 100%;
+  height: 36px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

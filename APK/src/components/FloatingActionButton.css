@@ -1,0 +1,45 @@
+/* FloatingActionButton.css */
+.floating-action-button {
+  position: fixed;
+  bottom: 80px; /* Position above bottom navigation */
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 50;
+  font-weight: bold;
+}
+
+.floating-action-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5);
+  background: linear-gradient(135deg, #ea580c, #dc2626);
+}
+
+.floating-action-button:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 2px 15px rgba(249, 115, 22, 0.3);
+}
+
+/* Hide on desktop */
+@media (min-width: 768px) {
+  .floating-action-button {
+    display: none;
+  }
+}
+
+/* Ensure it's visible on mobile */
+@media (max-width: 767px) {
+  .floating-action-button {
+    display: flex;
+  }
+}

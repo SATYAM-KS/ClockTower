@@ -1,0 +1,113 @@
+/* Header container */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 60px;
+  background: linear-gradient(90deg, #160e41 0%, #091933 100%);
+  color: white;
+  z-index: 10000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional override gradient */
+.gradient-bg {
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* Flex container inside the header */
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex:auto;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 1rem;
+}
+
+/* Left and right containers for icons */
+.header-side {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.header-side.right {
+  justify-content: flex-end;
+}
+
+/* Centered title */
+.header-title {
+  position: absolute;
+  left: 50%;
+  max-width: 100%;
+  transform: translateX(-50%);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Back/Menu icon buttons */
+.header-icon-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.header-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Hide hamburger by default */
+.header-hamburger {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .header-hamburger {
+    display: block;
+  }
+}
+
+/* Desktop-specific styles */
+@media (min-width: 640px) {
+  .header {
+    height: 70px;
+    padding: 0;
+  }
+
+  .header-inner {
+    padding: 0 2rem;
+    max-width: 1000px;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-side {
+    width: 48px;
+  }
+
+  .header-icon-btn {
+    padding: 0.5rem;
+  }
+
+  .header-icon-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+}

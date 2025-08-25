@@ -1,0 +1,41 @@
+/* FeatureCard.css */
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.3s;
+}
+.feature-card-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.icon-bg {
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.feature-title {
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+} 

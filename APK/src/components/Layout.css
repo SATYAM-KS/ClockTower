@@ -1,0 +1,14 @@
+.layout-main {
+  flex: 1 0 auto;
+  padding-bottom: 4.5rem; /* Space for bottom nav */
+}
+
+.layout-main.with-header-padding {
+  padding-top: 60px; /* Space for fixed header */
+}
+
+@media (min-width: 640px) {
+  .layout-main.with-header-padding {
+    padding-top: 72px; /* Adjust if your header is taller on desktop */
+  }
+}

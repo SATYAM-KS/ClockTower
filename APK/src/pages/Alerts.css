@@ -1,0 +1,197 @@
+/* Alerts.css */
+.alerts-page {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding-bottom: 2rem;
+}
+
+.alerts-loading-spinner {
+  margin: 4rem auto;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #ef4444;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.alerts-filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  margin: 1.5rem 1rem 1.5rem 1rem;
+  overflow-x: auto;
+}
+.alerts-filter-btn {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.alerts-filter-btn-active {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(239,68,68,0.08);
+}
+
+.alerts-banner {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 0 1rem 1.5rem 1rem;
+}
+.alerts-banner-icon {
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  padding: 0.5rem;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alerts-banner-content h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.alerts-banner-content p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.alerts-stats {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  margin: 0 1rem 1.5rem 1rem;
+}
+.alerts-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  text-align: center;
+}
+.alerts-stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.alerts-stats-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.alerts-stats-red { color: #ef4444; }
+.alerts-stats-orange { color: #f59e42; }
+.alerts-stats-blue { color: #3b82f6; }
+.alerts-stats-label {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.alerts-list {
+  margin: 0 1rem 2rem 1rem;
+}
+.alerts-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid transparent;
+}
+.alerts-card-active {
+  border-left: 4px solid #ef4444;
+}
+.alerts-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.alerts-type-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+.alerts-severity {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  max-width: 100%;
+  word-break: break-word;
+}
+.alerts-severity-critical { background: #ef4444; color: #fff; }
+.alerts-severity-high { background: #fee2e2; color: #b91c1c; }
+.alerts-severity-medium { background: #fef08a; color: #b45309; }
+.alerts-severity-low { background: #dcfce7; color: #166534; }
+.alerts-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+.alerts-message {
+  color: #4b5563;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.alerts-meta {
+  display: flex;
+  gap: 1.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.alerts-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.alerts-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  max-width: 100%;
+  word-break: break-word;
+}
+.alerts-badge-active {
+  background: #22c55e;
+  color: #fff;
+}
+.alerts-badge-help {
+  background: #3b82f6;
+  color: #fff;
+}
+.alerts-card-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.alerts-empty-icon {
+  color: #d1d5db;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+} 
